@@ -52,7 +52,7 @@ async function createOrderInSanity(session: Stripe.Checkout.Session) {
     total_details,
   } = session;
 
-  const { orderNumber, customerName, clerkUserId, customerEmail } =
+  const { orderNumber, customerName, clerkUserId } =
     metadata as Metadata;
 
   // 🔥 Fetch line items with product metadata

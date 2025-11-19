@@ -1,6 +1,5 @@
 
 import AddToCartButton from '@/components/AddToCartButton'
-import { Button } from '@/components/ui/button'
 import { imageUrl } from '@/lib/ImageUrl'
 import { getProductBySlug } from '@/sanity/lib/products/getProductBySlug'
 import { PortableText } from 'next-sanity'
