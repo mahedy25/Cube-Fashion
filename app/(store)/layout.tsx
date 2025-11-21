@@ -6,6 +6,7 @@ import Header from '@/components/sections/Header'
 import { SanityLive } from '@/sanity/lib/live'
 import { Navbar } from '@/components/sections/Navbar'
 import { SidebarProvider } from '@/components/ui/sidebar'
+import Footer from '@/components/sections/Footer'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -38,6 +39,7 @@ export default function RootLayout({
               <Header />
               <Navbar />
               {children}
+              <Footer />
               <SanityLive />
             </main>
           </SidebarProvider>

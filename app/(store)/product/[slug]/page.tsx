@@ -1,5 +1,5 @@
-// app/product/[slug]/page.tsx  (example path)
-import AddToCartButton from '@/components/AddToCartButton'
+
+import AddToCart from '@/components/AddToCart'
 import { imageUrl } from '@/lib/ImageUrl'
 import { getProductBySlug } from '@/sanity/lib/products/getProductBySlug'
 import { PortableText } from 'next-sanity'
@@ -98,8 +98,8 @@ export default async function Product({
             </div>
           </div>
 
-          <div className='mt-8'>
-            <AddToCartButton product={product} disabled={isOutOfStock} />
+          <div className='my-8'>
+            <AddToCart product={product} disabled={isOutOfStock} />
           </div>
         </div>
       </div>

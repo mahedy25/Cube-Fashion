@@ -3,6 +3,7 @@ import { Button } from '../ui/button'
 import { getActiveSaleByCouponCode } from '@/sanity/lib/sales/getActiveSaleByCouponCode'
 import { COUPON_CODES } from '@/sanity/lib/sales/couponCodes'
 import { Lobster } from 'next/font/google'
+import Link from 'next/link'
 
 // Define the Lobster font
 const lobster = Lobster({
@@ -38,9 +39,11 @@ export default async function SaleBanner() {
           </h4>
         </div>
         <div>
-          <Button className='mt-8 py-3 px-8 text-lg bg-[#D9004C] hover:bg-[#670626] rounded-lg uppercase tracking-wide'>
-            Shop Now
-          </Button>
+          <Link href='/all-products'>
+            <Button className='mt-8 py-3 px-8 text-lg  uppercase tracking-wide'>
+              Shop Now
+            </Button>
+          </Link>
         </div>
       </div>
 
