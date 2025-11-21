@@ -9,7 +9,7 @@ export default function Footer() {
         {/* Brand */}
         <div>
           <h2 className='text-2xl font-bold text-white tracking-wide'>
-            YourBrand
+            CubeFashion
           </h2>
           <p className='mt-4 text-sm text-gray-400 leading-relaxed'>
             Premium quality products delivered straight to your doorstep.
@@ -117,7 +117,7 @@ export default function Footer() {
       {/* Divider */}
       <div className='border-t border-gray-800 my-15 sm:my-20 pt-6'>
         <p className='text-center text-sm text-gray-500'>
-          © {new Date().getFullYear()} YourBrand — All Rights Reserved.
+          © {new Date().getFullYear()} CubeFashion — All Rights Reserved.
         </p>
       </div>
     </footer>
