@@ -80,7 +80,7 @@ export default function Cart() {
   }
 
   return (
-    <div className='container mx-auto p-4 max-w-6xl'>
+    <div className='container mx-auto p-4 max-w-6xl h-screen'>
       <h1
         className={`text-2xl sm:text-3xl md:text-4xl ${lobster.className} text-[#670626] hover:text-[#670626]/90 cursor-pointer tracking-wide mb-4 text-center md:mb-6`}
       >
