@@ -1,7 +1,8 @@
 
 import { sanityFetch } from '@/sanity/lib/live'
 import { defineQuery } from 'next-sanity'
-import { FloatingDockClient } from './NavbarClient'
+import { NavbarClient } from './NavbarClient'
+
 
 
 
@@ -20,5 +21,5 @@ export async function Navbar() {
     return null
   }
 
-  return <FloatingDockClient navItems={navItems} />
+  return <NavbarClient navItems={navItems} />
 }

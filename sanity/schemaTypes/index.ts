@@ -8,6 +8,7 @@ import navigationType from './navigationType'
 
 
 
+
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
     productType,

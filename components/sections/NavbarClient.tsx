@@ -1,4 +1,4 @@
-'use client'
+
 
 import Link from 'next/link'
 import { DynamicIcon } from '../DynamicIcon'
@@ -10,7 +10,7 @@ interface NavItem {
   isExternal?: boolean | null
 }
 
-interface FloatingDockClientProps {
+interface NavbarClientProps {
   navItems: NavItem[]
 }
 
@@ -33,7 +33,7 @@ const getVisibleLinks = (links: DockLink[], maxItems: number) => {
   }
 }
 
-export function FloatingDockClient({ navItems }: FloatingDockClientProps) {
+export function NavbarClient({ navItems }: NavbarClientProps) {
   // Remove sidebar state logic
   const links: DockLink[] = navItems.map((item) => ({
     title: item.title || 'Untitled',
