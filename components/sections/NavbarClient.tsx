@@ -34,7 +34,7 @@ const getVisibleLinks = (links: DockLink[], maxItems: number) => {
 }
 
 export function NavbarClient({ navItems }: NavbarClientProps) {
-  // Remove sidebar state logic
+
   const links: DockLink[] = navItems.map((item) => ({
     title: item.title || 'Untitled',
     href: item.href || '#',
@@ -46,7 +46,7 @@ export function NavbarClient({ navItems }: NavbarClientProps) {
 
   return (
     <>
-      {/* Floating Dock - Now always visible */}
+      
       <div className='fixed z-9999 transition-all duration-300 pointer-events-none group/dock bottom-0 left-1/2 -translate-x-1/2 md:-translate-y-1/2'>
         <div className='flex items-center gap-2 px-3 py-2.5 rounded-xl md:rounded-2xl bg-white/20 dark:bg-black/30 hover:bg-white/30 dark:hover:bg-black/40 backdrop-blur-xl border border-white/30 dark:border-white/20 hover:border-white/40 dark:hover:border-white/30 shadow-[0_8px_32px_0_rgba(0,0,0,0.15)] dark:shadow-[0_8px_32px_0_rgba(0,0,0,0.5)] pointer-events-auto transition-all duration-300'>
           {mobile.visible.map((item) => (
@@ -137,7 +137,7 @@ function DockIcon({
   )
 
   const wrapperClasses =
-    'group relative flex items-center justify-center w-12 h-12 md:w-12 md:h-12'
+    'group relative flex items-center justify-center w-12 h-12 md:w-12 md:h-12 rounded-full bg-white'
 
   return item.onClick ? (
     <button type='button' onClick={handleClick} className={wrapperClasses}>

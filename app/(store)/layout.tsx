@@ -1,3 +1,4 @@
+
 import { ClerkProvider } from '@clerk/nextjs'
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
@@ -5,7 +6,7 @@ import '../globals.css'
 import Header from '@/components/sections/Header'
 import { SanityLive } from '@/sanity/lib/live'
 import { Navbar } from '@/components/sections/Navbar'
-import { SidebarProvider } from '@/components/ui/sidebar'
+
 import Footer from '@/components/sections/Footer'
 
 const geistSans = Geist({
@@ -30,19 +31,18 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider dynamic>
-      <html lang='en'>
+      <html lang='en' suppressHydrationWarning>
         <body
+          suppressHydrationWarning
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
-          <SidebarProvider>
-            <main className='w-full'>
-              <Header />
-              <Navbar />
-              {children}
-              <Footer />
-              <SanityLive />
-            </main>
-          </SidebarProvider>
+          <main className='w-full'>
+            <Header />
+            <Navbar />
+            {children}
+            <Footer />
+            <SanityLive />
+          </main>
         </body>
       </html>
     </ClerkProvider>

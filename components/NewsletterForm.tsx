@@ -55,7 +55,7 @@ export function NewsletterForm() {
         type='text'
         name='name'
         placeholder='Your name'
-        className='px-4 py-2 w-full rounded-md bg-gray-800 text-gray-200 border border-gray-700 
+        className='px-4 py-2 w-full rounded-md bg-gray-800 text-gray-200 border border-gray-700
         focus:outline-none focus:border-[#D9004C]'
         required
         disabled={isPending}
@@ -65,7 +65,7 @@ export function NewsletterForm() {
         type='email'
         name='email'
         placeholder='Your email'
-        className='px-4 py-2 w-full rounded-md bg-gray-800 text-gray-200 border border-gray-700 
+        className='px-4 py-2 w-full rounded-md bg-gray-800 text-gray-200 border border-gray-700
         focus:outline-none focus:border-[#D9004C]'
         required
         disabled={isPending}

@@ -1,6 +1,7 @@
 
 import Categories from "@/components/sections/Categories";
 import NewlyAddedProducts from "@/components/sections/NewlyAddedProducts";
+
 import OnSaleProducts from "@/components/sections/OnSaleProducts";
 import SaleBanner from "@/components/sections/SaleBanner";
 
@@ -16,6 +17,7 @@ export default async function Home() {
       <Categories/>
       <NewlyAddedProducts  />
       <OnSaleProducts />
+  
     </div>
   )
 }
