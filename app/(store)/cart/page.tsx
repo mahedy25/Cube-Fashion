@@ -97,7 +97,7 @@ export default function Cart() {
           {groupedItems?.map((item) => (
             <div
               key={item.product._id}
-              className='mb-4 p-4 border rounded flex items-center justify-between'
+              className='mb-4 p-4 border rounded flex flex-col sm:flex-row  items-center gap-2 justify-between '
             >
               <div
                 className='flex items-center cursor-pointer flex-1 min-w-0'
