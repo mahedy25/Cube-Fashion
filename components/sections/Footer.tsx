@@ -5,9 +5,7 @@ import { NewsletterForm } from '../NewsletterForm'
 export default function Footer() {
   return (
     <footer className='bg-[#0f0f0f] text-gray-300 pt-16 pb-10 mt-auto w-full'>
-      {/* Outer Container that protects layout on all screens */}
       <div className='max-w-screen-2xl mx-auto px-6'>
-        {/* Top Section */}
         <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12'>
           {/* Brand */}
           <div>

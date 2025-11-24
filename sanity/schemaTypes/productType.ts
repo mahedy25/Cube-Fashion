@@ -1,4 +1,4 @@
-// product.ts
+// schemas/product.ts
 import { TrolleyIcon } from '@sanity/icons'
 import { defineField, defineType } from 'sanity'
 
@@ -42,36 +42,25 @@ export const productType = defineType({
       type: "number",
       validation: (Rule) => Rule.min(0).required(),
     }),
-
-
-        // NEW: Optional Discount Price (must be less than price if present)
+    // Optional discount price
     defineField({
-  name: "discountPrice",
-  title: "Discount Price",
-  type: "number",
-  description: "Optional. Enter a lower price when the product is on sale.",
-  validation: (Rule) =>
-    Rule.custom((value, context) => {
-      const price = context?.document?.price;
-
-      // Nothing entered → valid (field is optional)
-      if (value === undefined || value === null) return true;
-
-      // Must be a number
-      if (typeof value !== "number") {
-        return "Discount price must be a number";
-      }
-
-      // Must be less than original price
-      if (typeof price === "number" && value >= price) {
-        return "Discount price must be LESS than the regular price";
-      }
-
-      return true;
+      name: "discountPrice",
+      title: "Discount Price",
+      type: "number",
+      description: "Optional. Enter a lower price when the product is on sale.",
+      validation: (Rule) =>
+        Rule.custom((value, context) => {
+          const price = context?.document?.price;
+          if (value === undefined || value === null) return true;
+          if (typeof value !== "number") {
+            return "Discount price must be a number";
+          }
+          if (typeof price === "number" && value >= price) {
+            return "Discount price must be LESS than the regular price";
+          }
+          return true;
+        }),
     }),
-}),
-
-
 
     // Categories
     defineField({
@@ -81,7 +70,7 @@ export const productType = defineType({
       of: [
         {
           type: "reference",
-          to: [{ type: "category" }], // Array of references to the 'category' type
+          to: [{ type: "category" }],
         },
       ],
     }),
@@ -91,6 +80,70 @@ export const productType = defineType({
       title: "Stock",
       type: "number",
       validation: (Rule) => Rule.min(0),
+    }),
+
+    // Simple colors array with availability toggle
+    defineField({
+      name: "colors",
+      title: "Available Colors",
+      type: "array",
+      of: [
+        {
+          type: "object",
+          fields: [
+            {
+              name: "color",
+              title: "Color",
+              type: "string",
+              validation: (Rule) => Rule.required(),
+            },
+            {
+              name: "available",
+              title: "Available?",
+              type: "boolean",
+              initialValue: true,
+            },
+          ],
+          preview: {
+            select: { color: "color", available: "available" },
+            prepare({ color, available }) {
+              return { title: color, subtitle: available ? "Available" : "Unavailable" };
+            },
+          },
+        },
+      ],
+    }),
+
+    // Simple sizes array with availability toggle
+    defineField({
+      name: "sizes",
+      title: "Available Sizes",
+      type: "array",
+      of: [
+        {
+          type: "object",
+          fields: [
+            {
+              name: "size",
+              title: "Size",
+              type: "string",
+              validation: (Rule) => Rule.required(),
+            },
+            {
+              name: "available",
+              title: "Available?",
+              type: "boolean",
+              initialValue: true,
+            },
+          ],
+          preview: {
+            select: { size: "size", available: "available" },
+            prepare({ size, available }) {
+              return { title: size, subtitle: available ? "Available" : "Unavailable" };
+            },
+          },
+        },
+      ],
     }),
   ],
 

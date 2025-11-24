@@ -1,3 +1,4 @@
+// schemas/order.ts
 import { BasketIcon } from "@sanity/icons";
 import { defineArrayMember, defineField, defineType } from "sanity";
 
@@ -66,6 +67,18 @@ export const orderType = defineType({
               name: "quantity",
               title: "Quantity Purchased",
               type: "number",
+              validation: (Rule) => Rule.required().min(1),
+            }),
+            // NEW: capture what the user selected
+            defineField({
+              name: "selectedColor",
+              title: "Selected Color",
+              type: "string",
+            }),
+            defineField({
+              name: "selectedSize",
+              title: "Selected Size",
+              type: "string",
             }),
           ],
           preview: {
@@ -74,12 +87,15 @@ export const orderType = defineType({
               quantity: "quantity",
               image: "product.image",
               price: "product.price",
-              currency: "product.currency",
+              selectedColor: "selectedColor",
+              selectedSize: "selectedSize",
             },
             prepare(select) {
+              const colorPart = select.selectedColor ? ` • ${select.selectedColor}` : "";
+              const sizePart = select.selectedSize ? ` • ${select.selectedSize}` : "";
               return {
                 title: `${select.product} x ${select.quantity}`,
-                subtitle: `${select.price} * ${select.quantity}`,
+                subtitle: `${select.price ?? ""}${colorPart}${sizePart}`,
                 media: select.image,
               };
             },
@@ -137,7 +153,10 @@ export const orderType = defineType({
       email: "customerEmail",
     },
     prepare(select) {
-      const orderIdSnippet = `${select.orderId.slice(0, 5)}...${select.orderId.slice(-5)}`;
+      const orderIdSnippet =
+        select.orderId && select.orderId.length > 10
+          ? `${select.orderId.slice(0, 5)}...${select.orderId.slice(-5)}`
+          : select.orderId;
       return {
         title: `${select.name} {${orderIdSnippet}}`,
         subtitle: `${select.amount} ${select.currency}, ${select.email}`,
