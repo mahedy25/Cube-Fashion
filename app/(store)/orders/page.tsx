@@ -21,15 +21,15 @@ export default async function Orders() {
   const orders = await getMyOrders(userId)
 
   return (
-    <div className='flex flex-col items-center justify-start min-h-screen '>
-      <div className='p-6 sm:p-8 rounded-xl  w-full max-w-5xl backdrop-blur'>
+    <div className='flex flex-col items-center justify-start min-h-screen'>
+      <div className='p-6 sm:p-8 rounded-xl w-full max-w-5xl backdrop-blur'>
         <h1
           className={`text-2xl sm:text-3xl md:text-4xl ${lobster.className} text-[#670626] hover:text-[#670626]/90 cursor-pointer tracking-wide mb-4 text-center md:mb-6`}
         >
           My Orders
         </h1>
 
-        {/* ✨ Modern Gradient Divider */}
+        {/* Divider */}
         <div className='relative w-32 h-1 mx-auto mb-8'>
           <div className='absolute inset-0 bg-linear-to-r from-[#670626] via-[#D9004C] to-[#670626] rounded-full'></div>
           <div className='absolute inset-0 blur-md bg-linear-to-r from-[#670626] via-[#D9004C] to-[#670626] opacity-60'></div>
@@ -123,7 +123,7 @@ export default async function Orders() {
                   <div className='space-y-4'>
                     {order.products?.map((product) => (
                       <div
-                        key={product.product?._id}
+                        key={product._key} // ✅ FIXED: unique stable key
                         className='flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b pb-4 last:border-none'
                       >
                         <div className='flex items-center gap-4'>
@@ -137,6 +137,7 @@ export default async function Orders() {
                               />
                             </div>
                           )}
+
                           <div>
                             <p className='font-medium text-gray-900'>
                               {product.product?.name}

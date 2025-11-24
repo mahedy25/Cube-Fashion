@@ -1,9 +1,10 @@
 'use client'
 import { useSearchParams } from 'next/navigation'
-import useCartStore from '../store'
+
 import { useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
+import { useCartStore } from '../store'
 
 export default function Success() {
   const searchParams = useSearchParams()
