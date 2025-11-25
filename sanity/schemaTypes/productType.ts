@@ -32,6 +32,14 @@ export const productType = defineType({
       options: { hotspot: true },
     }),
     defineField({
+  name: "gallery",
+  title: "Product Gallery",
+  type: "array",
+  of: [{ type: "image", options: { hotspot: true } }],
+  description: "Upload additional images for the gallery",
+}),
+
+    defineField({
       name: "description",
       title: "Description",
       type: "blockContent",
