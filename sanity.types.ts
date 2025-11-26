@@ -13,6 +13,24 @@
  */
 
 // Source: schema.json
+export type Review = {
+  _id: string;
+  _type: "review";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  product?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "product";
+  };
+  userName?: string;
+  title?: string;
+  comment?: string;
+  rating?: number;
+};
+
 export type Contact = {
   _id: string;
   _type: "contact";
@@ -303,7 +321,7 @@ export type Geopoint = {
   alt?: number;
 };
 
-export type AllSanitySchemaTypes = Contact | Newsletter | Navigation | Sale | Order | Category | Slug | BlockContent | Product | SanityImageCrop | SanityImageHotspot | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint;
+export type AllSanitySchemaTypes = Review | Contact | Newsletter | Navigation | Sale | Order | Category | Slug | BlockContent | Product | SanityImageCrop | SanityImageHotspot | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint;
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./sanity/lib/orders/getMyOrders.tsx
 // Variable: MY_ORDERS_QUERY
@@ -393,7 +411,7 @@ export type ALL_CATEGORIES_QUERYResult = Array<{
 
 // Source: ./sanity/lib/products/getAllProducts.ts
 // Variable: ALL_PRODUCTS_QUERY
-// Query: *[_type == "product"]      | order(name asc)
+// Query: *[_type == "product"]{      ...,            // ⭐ Fetch all ratings only (numbers only)      "ratings": *[        _type == "review" && product._ref == ^._id      ]{        rating      },      // ⭐ Fetch full reviews      "reviews": *[        _type == "review" && product._ref == ^._id      ]{        rating,        userName,        title,        comment      }    } | order(_createdAt desc)
 export type ALL_PRODUCTS_QUERYResult = Array<{
   _id: string;
   _type: "product";
@@ -438,6 +456,15 @@ export type ALL_PRODUCTS_QUERYResult = Array<{
     [internalGroqTypeReferenceTo]?: "category";
   }>;
   stock?: number;
+  ratings: Array<{
+    rating: number | null;
+  }>;
+  reviews: Array<{
+    rating: number | null;
+    userName: string | null;
+    title: string | null;
+    comment: string | null;
+  }>;
 }>;
 
 // Source: ./sanity/lib/products/getLatestProducts.ts
@@ -539,9 +566,9 @@ export type ON_SALE_PRODUCTS_QUERYResult = Array<{
 }>;
 
 // Source: ./sanity/lib/products/getProductBySlug.ts
-// Variable: PRODUCT_BY_ID_QUERY
-// Query: *[      _type == "product" &&      slug.current == $slug    ] | order(name asc)[0]
-export type PRODUCT_BY_ID_QUERYResult = {
+// Variable: PRODUCT_BY_SLUG_QUERY
+// Query: *[_type == "product" && slug.current == $slug][0]{      ...,      // ⭐ Ratings only      "ratings": *[        _type == "review" && product._ref == ^._id      ]{        rating      },      // ⭐ Full reviews      "reviews": *[        _type == "review" && product._ref == ^._id      ]{        rating,        userName,        title,        comment      }    }
+export type PRODUCT_BY_SLUG_QUERYResult = {
   _id: string;
   _type: "product";
   _createdAt: string;
@@ -585,6 +612,15 @@ export type PRODUCT_BY_ID_QUERYResult = {
     [internalGroqTypeReferenceTo]?: "category";
   }>;
   stock?: number;
+  ratings: Array<{
+    rating: number | null;
+  }>;
+  reviews: Array<{
+    rating: number | null;
+    userName: string | null;
+    title: string | null;
+    comment: string | null;
+  }>;
 } | null;
 
 // Source: ./sanity/lib/products/getProductsByCategory.ts
@@ -709,10 +745,10 @@ declare module "@sanity/client" {
   interface SanityQueries {
     "\n  *[_type == 'order' && clerkUserId == $userId] | order(orderDate desc){\n      ...,\n      products[]{\n        ...,\n        product->\n      }\n    }\n": MY_ORDERS_QUERYResult;
     "\n    *[_type == \"category\"] | order(name asc)\n    ": ALL_CATEGORIES_QUERYResult;
-    "\n     *[_type == \"product\"] \n     | order(name asc)\n    ": ALL_PRODUCTS_QUERYResult;
+    "\n    *[_type == \"product\"]{\n      ...,\n      \n      // \u2B50 Fetch all ratings only (numbers only)\n      \"ratings\": *[\n        _type == \"review\" && product._ref == ^._id\n      ]{\n        rating\n      },\n\n      // \u2B50 Fetch full reviews\n      \"reviews\": *[\n        _type == \"review\" && product._ref == ^._id\n      ]{\n        rating,\n        userName,\n        title,\n        comment\n      }\n    } | order(_createdAt desc)\n  ": ALL_PRODUCTS_QUERYResult;
     "\n  *[_type == \"product\"]\n  | order(_createdAt desc)[0...5]\n": LATEST_PRODUCTS_QUERYResult;
     "\n  *[\n    _type == \"product\" &&\n    defined(discountPrice) &&\n    discountPrice < price\n  ]\n  | order(_createdAt desc)\n": ON_SALE_PRODUCTS_QUERYResult;
-    "\n    *[\n      _type == \"product\" &&\n      slug.current == $slug\n    ] | order(name asc)[0]\n    ": PRODUCT_BY_ID_QUERYResult;
+    "\n    *[_type == \"product\" && slug.current == $slug][0]{\n      ...,\n\n      // \u2B50 Ratings only\n      \"ratings\": *[\n        _type == \"review\" && product._ref == ^._id\n      ]{\n        rating\n      },\n\n      // \u2B50 Full reviews\n      \"reviews\": *[\n        _type == \"review\" && product._ref == ^._id\n      ]{\n        rating,\n        userName,\n        title,\n        comment\n      }\n    }\n  ": PRODUCT_BY_SLUG_QUERYResult;
     "*[      \n    _type == \"product\" \n    && references(*[_type == \"category\" && slug.current == $categorySlug]._id)    \n    ] | order(name asc)": PRODUCTS_BY_CATEGORY_QUERYResult;
     "\n    *[\n      _type == \"product\"\n    ] | order(name asc)\n  ": PRODUCT_SEARCH_QUERYResult;
     "\n    *[\n      _type == \"sale\" && \n      isActive == true &&\n      couponCode == $couponCode \n    ] | order(validFrom desc)[0]\n    ": ACTIVE_SALE_BY_COUPON_CODE_QUERYResult;

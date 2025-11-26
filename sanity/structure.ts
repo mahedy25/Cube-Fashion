@@ -14,6 +14,7 @@ export const structure: StructureResolver = (S) =>
       S.documentTypeListItem("sale").title("Sales"),
       S.documentTypeListItem("newsletter").title("Newsletter Subscriptions"),
       S.documentTypeListItem("navigation").title("Navigation"),
+      S.documentTypeListItem("review").title("Review"),
 
       S.divider(),
 
@@ -58,7 +59,8 @@ export const structure: StructureResolver = (S) =>
             "sale",
             "newsletter",
             "navigation",
-            "contact", // prevent double-listing since we added it manually
+            "contact",
+            "review" // prevent double-listing since we added it manually
           ].includes(item.getId()!)
       ),
     ]);

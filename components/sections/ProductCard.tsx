@@ -1,10 +1,32 @@
-// components/sections/ProductCard.tsx
+'use client'
+
 import Image from 'next/image'
 import Link from 'next/link'
 import type { Product } from '@/sanity.types'
 import { imageUrl } from '@/lib/ImageUrl'
+import { Star } from 'lucide-react'
 
-export default function ProductCard({ product }: { product: Product }) {
+// EXTENDED TYPE (safe & optional, doesn't break Sanity)
+type ProductWithRatings = Product & {
+  ratings?: Array<{
+    rating: number | null
+    userName: string | null
+    title: string | null
+    comment: string | null
+  }>
+  reviews?: Array<{
+    rating: number | null
+    userName: string | null
+    title: string | null
+    comment: string | null
+  }>
+}
+
+export default function ProductCard({
+  product,
+}: {
+  product: ProductWithRatings
+}) {
   const isOutOfStock = product.stock != null && product.stock <= 0
   const price = typeof product.price === 'number' ? product.price : undefined
   const discount =
@@ -12,6 +34,18 @@ export default function ProductCard({ product }: { product: Product }) {
       ? product.discountPrice
       : undefined
 
+  // ⭐ Average rating safely
+  const avgRating =
+    product.ratings && product.ratings.length > 0
+      ? (
+          product.ratings.reduce((sum, r) => sum + (r.rating ?? 0), 0) /
+          product.ratings.length
+        ).toFixed(1)
+      : null
+
+  const reviewCount = product.reviews?.length ?? 0
+
+  // extract text description
   const description = product.description
     ? product.description
         .map((block) =>
@@ -27,7 +61,6 @@ export default function ProductCard({ product }: { product: Product }) {
       ? description.substring(0, 90) + '...'
       : description
 
-  // percent off rounded
   const percentOff =
     price && discount && price > 0
       ? Math.round(((price - discount) / price) * 100)
@@ -38,9 +71,9 @@ export default function ProductCard({ product }: { product: Product }) {
       href={`/product/${product.slug?.current}`}
       className={`group flex flex-col items-start justify-between gap-4 p-5 border border-gray-200 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 cursor-pointer ${
         isOutOfStock ? 'opacity-50 pointer-events-none' : ''
-      } max-w-[300px] h-[420px] shrink-0 bg-white`}
+      } max-w-[300px] h-[440px] shrink-0 bg-white`}
     >
-      {/* Badge + Image */}
+      {/* Image + Sale Badge */}
       <div className='relative w-full h-[220px] overflow-hidden rounded-lg'>
         {discount && (
           <span className='absolute top-3 left-3 z-10 inline-block px-2 py-1 text-xs font-semibold rounded-md bg-[#D9004C] text-white shadow'>
@@ -54,7 +87,6 @@ export default function ProductCard({ product }: { product: Product }) {
             src={imageUrl(product.image).url()}
             alt={product.name || 'Product Image'}
             fill
-            sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
           />
         )}
 
@@ -68,16 +100,31 @@ export default function ProductCard({ product }: { product: Product }) {
       </div>
 
       {/* Text Content */}
-      <div className='w-full flex flex-col justify-between h-[150px]'>
+      <div className='w-full flex flex-col justify-between h-[170px]'>
         <div>
           <h2 className='text-lg font-semibold text-gray-800'>
             {product.name}
           </h2>
+
           <p className='mt-2 text-sm text-gray-600 line-clamp-3'>
             {truncatedDescription}
           </p>
+
+          {/* ⭐ Rating Preview */}
+          <div className='flex items-center gap-1 mt-2'>
+            <Star className='w-4 h-4 text-yellow-500 fill-yellow-500' />
+
+            <span className='text-sm font-medium'>
+              {avgRating ? avgRating : '0.0'}
+            </span>
+
+            <span className='text-xs text-gray-500'>
+              ({reviewCount} {reviewCount === 1 ? 'Review' : 'Reviews'})
+            </span>
+          </div>
         </div>
 
+        {/* Price Section */}
         <div className='mt-3 flex items-baseline gap-3'>
           {discount && price ? (
             <>
