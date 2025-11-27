@@ -8,6 +8,7 @@ import { SanityLive } from '@/sanity/lib/live'
 import { Navbar } from '@/components/sections/Navbar'
 
 import Footer from '@/components/sections/Footer'
+import { Toaster } from '@/components/ui/sonner'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -40,6 +41,7 @@ export default function RootLayout({
             <Header />
             <Navbar />
             {children}
+            <Toaster richColors position='top-center' />
             <Footer />
             <SanityLive />
           </main>

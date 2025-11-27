@@ -2,6 +2,8 @@
 
 import { useCartStore } from '@/app/(store)/store'
 import { Product } from '@/sanity.types'
+import { Minus, Plus } from 'lucide-react'
+import { toast } from 'sonner'
 
 interface AddToCartButtonProps {
   product: Product
@@ -16,35 +18,66 @@ export default function AddToCartButton({
   const removeItem = useCartStore((s) => s.removeItem)
   const itemCount = useCartStore((s) => s.getItemCount(product._id))
 
+  const handleAdd = () => {
+    if (disabled) return
+    addItem(product)
+
+    toast.success(`Added ${product.name} to your cart!`, {
+      duration: 1800,
+    })
+  }
+
+  const handleRemove = () => {
+    if (itemCount <= 0) return
+
+    removeItem(product._id)
+
+    if (itemCount === 1) {
+      toast.success(`Removed ${product.name} from your cart`, {
+        duration: 1800,
+      })
+    }
+  }
+
   return (
-    <div className='flex items-center justify-center space-x-2'>
-      {/* Remove */}
+    <div className='flex items-center gap-4'>
+      {/* Minus */}
       <button
-        onClick={() => removeItem(product._id)}
+        onClick={handleRemove}
         disabled={itemCount === 0}
-        className={`w-8 h-8 rounded-full flex items-center justify-center transition ${
-          itemCount === 0
-            ? 'bg-gray-200 cursor-not-allowed'
-            : 'bg-gray-300 hover:bg-gray-400'
-        }`}
+        className={`
+          w-11 h-11 flex cursor-pointer items-center justify-center rounded-xl border text-[15px]
+          transition-all duration-300 shadow-sm backdrop-blur
+          ${
+            itemCount === 0
+              ? 'border-gray-200 text-gray-300 cursor-not-allowed'
+              : 'border-gray-300 text-gray-700 hover:bg-red-500 hover:text-white hover:border-red-500 active:scale-90'
+          }
+        `}
       >
-        <span className='text-xl font-bold text-gray-700'>-</span>
+        <Minus size={18} />
       </button>
 
       {/* Quantity */}
-      <span className='w-8 text-center font-semibold'>{itemCount}</span>
+      <span className='min-w-8 text-center text-xl font-semibold text-gray-900'>
+        {itemCount}
+      </span>
 
-      {/* Add */}
+      {/* Plus */}
       <button
-        onClick={() => addItem(product)}
+        onClick={handleAdd}
         disabled={disabled}
-        className={`w-8 h-8 rounded-full flex items-center justify-center transition ${
-          disabled
-            ? 'bg-gray-200 cursor-not-allowed'
-            : 'bg-gray-300 hover:bg-gray-400'
-        }`}
+        className={`
+          w-11 h-11 flex cursor-pointer items-center justify-center rounded-xl border text-[15px]
+          transition-all duration-300 shadow-sm backdrop-blur
+          ${
+            disabled
+              ? 'border-gray-200 text-gray-300 cursor-not-allowed'
+              : 'border-gray-300 text-gray-700 hover:bg-green-500 hover:text-white hover:border-green-500 active:scale-90'
+          }
+        `}
       >
-        <span className='text-2xl font-bold text-gray-700'>+</span>
+        <Plus size={18} />
       </button>
     </div>
   )
