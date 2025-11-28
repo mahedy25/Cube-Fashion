@@ -1,7 +1,7 @@
 'use client'
 
 import { useSearchParams } from 'next/navigation'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { useCartStore } from '../store'
@@ -18,16 +18,25 @@ export default function Success() {
   const sessionId = searchParams.get('session_id')
   const clearCart = useCartStore((state) => state.clearCart)
 
+  // NEW: delay loading state
+  const [loadingOrders, setLoadingOrders] = useState(true)
+
   useEffect(() => {
     if (orderNumber && sessionId) {
       clearCart()
       useCartStore.persist.clearStorage()
     }
+
+    // Delay 3–5 seconds so webhook finishes
+    const timer = setTimeout(() => {
+      setLoadingOrders(false)
+    }, 4000) // 4 seconds delay
+
+    return () => clearTimeout(timer)
   }, [orderNumber, sessionId, clearCart])
 
   return (
     <div className='flex flex-col items-center justify-center min-h-screen bg-white px-6 py-10'>
-      {/* SUCCESS ICON */}
       <div className='flex justify-center mb-8'>
         <div className='h-24 w-24 bg-[#e9e5dc] rounded-full flex items-center justify-center shadow-md'>
           <svg
@@ -46,7 +55,6 @@ export default function Success() {
         </div>
       </div>
 
-      {/* TITLE */}
       <h1
         className={`${cinzel.className} text-3xl font-semibold text-[#670626] text-center mb-3`}
       >
@@ -57,7 +65,6 @@ export default function Success() {
         Your purchase was successful and is now being processed.
       </p>
 
-      {/* ORDER DETAILS */}
       <div className='space-y-1 mb-8 text-center'>
         {orderNumber && (
           <p className='text-sm text-gray-600'>
@@ -73,18 +80,25 @@ export default function Success() {
         )}
       </div>
 
-      {/* FOOTER TEXT */}
       <p className='text-gray-600 text-center mb-8'>
         A confirmation email has been sent to your inbox.
       </p>
 
-      {/* BUTTONS */}
       <div className='flex flex-col sm:flex-row gap-4 justify-center'>
+        {/* View Orders Button */}
         <Button
-          asChild
+          asChild={!loadingOrders}
+          disabled={loadingOrders}
           className='bg-[#670626] hover:bg-[#D9004C] text-white px-8 py-3 rounded-md'
         >
-          <Link href='/orders'>View Order History</Link>
+          {loadingOrders ? (
+            <div className='flex items-center gap-2'>
+              <span className='loader border-t-transparent border-2 w-4 h-4 rounded-full animate-spin'></span>
+              Loading...
+            </div>
+          ) : (
+            <Link href='/orders'>View Order History</Link>
+          )}
         </Button>
 
         <Button
@@ -95,6 +109,13 @@ export default function Success() {
           <Link href='/all-products'>Continue Shopping</Link>
         </Button>
       </div>
+
+      {/* Spinner style */}
+      <style>{`
+        .loader {
+          border-color: #fff;
+        }
+      `}</style>
     </div>
   )
 }
