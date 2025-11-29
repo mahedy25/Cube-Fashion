@@ -48,10 +48,8 @@ export async function createCheckoutSession(
       console.log("Created new Stripe customer:", customerId);
     }
 
-    const baseUrl =
-      process.env.NODE_ENV === "production"
-        ? `https://${process.env.VERCEL_URL}`
-        : `${process.env.NEXT_PUBLIC_BASE_URL}`;
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://scentora.vercel.app";
+
 
     const successUrl = `${baseUrl}/success?session_id={CHECKOUT_SESSION_ID}&orderNumber=${metadata.orderNumber}`;
     const cancelUrl = `${baseUrl}/cart`;
