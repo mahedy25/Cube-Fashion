@@ -24,7 +24,7 @@ export async function createCheckoutSession(
     console.log("Incoming metadata:", metadata);
     console.log("Cart items:", items);
 
-    // 🔥 FIX: Always ensure a Stripe customer exists
+    // ✅ Ensure Stripe customer exists
     let customerId: string;
 
     const customers = await stripe.customers.list({
@@ -43,6 +43,7 @@ export async function createCheckoutSession(
           clerkUserId: metadata.clerkUserId,
         },
       });
+
       customerId = newCustomer.id;
       console.log("Created new Stripe customer:", customerId);
     }
@@ -55,39 +56,42 @@ export async function createCheckoutSession(
     const successUrl = `${baseUrl}/success?session_id={CHECKOUT_SESSION_ID}&orderNumber=${metadata.orderNumber}`;
     const cancelUrl = `${baseUrl}/cart`;
 
-   const session = await stripe.checkout.sessions.create({
-  customer: customerId,
+    // ✅ THE CRITICAL FIX IS HERE
+    const session = await stripe.checkout.sessions.create({
+      customer: customerId,
 
-  // ✅ FIX – always send metadata manually & flat
-  metadata: {
-    orderNumber: metadata.orderNumber,
-    customerName: metadata.customerName,
-    customerEmail: metadata.customerEmail,
-    clerkUserId: metadata.clerkUserId,
-  },
+      // ✅ MUST MATCH CLERK USER
+      client_reference_id: metadata.clerkUserId,
 
-  mode: "payment",
-  allow_promotion_codes: true,
-  success_url: successUrl,
-  cancel_url: cancelUrl,
-
-  line_items: items.map((item) => ({
-    price_data: {
-      currency: "usd",
-      unit_amount: Math.round(item.product.price! * 100),
-      product_data: {
-        name: item.product.name ?? "Product",
-        metadata: { id: item.product._id },
-        description: `Product ID: ${item.product._id}`,
-        images: item.product.image
-          ? [imageUrl(item.product.image).url()]
-          : undefined,
+      // ✅ KEEP METADATA TOO (fine to duplicate)
+      metadata: {
+        orderNumber: metadata.orderNumber,
+        customerName: metadata.customerName,
+        customerEmail: metadata.customerEmail,
+        clerkUserId: metadata.clerkUserId,
       },
-    },
-    quantity: item.quantity,
-  })),
-});
 
+      mode: "payment",
+      allow_promotion_codes: true,
+      success_url: successUrl,
+      cancel_url: cancelUrl,
+
+      line_items: items.map((item) => ({
+        price_data: {
+          currency: "usd",
+          unit_amount: Math.round(item.product.price! * 100),
+          product_data: {
+            name: item.product.name ?? "Product",
+            metadata: { id: item.product._id },
+            description: `Product ID: ${item.product._id}`,
+            images: item.product.image
+              ? [imageUrl(item.product.image).url()]
+              : undefined,
+          },
+        },
+        quantity: item.quantity,
+      })),
+    });
 
     return session.url;
   } catch (error) {
