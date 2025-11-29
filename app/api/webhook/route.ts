@@ -20,12 +20,17 @@ export async function POST(req: NextRequest) {
       { status: 400 }
     );
 
-  const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
-  if (!webhookSecret)
-    return NextResponse.json(
-      { error: "Missing Webhook Secret" },
-      { status: 400 }
-    );
+  const webhookSecret =
+  process.env.VERCEL === "1"
+    ? process.env.VERCEL_STRIPE_WEBHOOK_SECRET
+    : process.env.SSTRIPE_WEBHOOK_SECRET;
+
+if (!webhookSecret)
+  return NextResponse.json(
+    { error: "Missing Webhook Secret for current environment" },
+    { status: 400 }
+  );
+
 
   let event: Stripe.Event;
 
