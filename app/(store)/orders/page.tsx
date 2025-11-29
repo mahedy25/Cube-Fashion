@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic'
 import { formatCurrency } from '@/lib/formatCurrency'
 import { imageUrl } from '@/lib/ImageUrl'
 import { getMyOrders } from '@/sanity/lib/orders/getMyOrders'
