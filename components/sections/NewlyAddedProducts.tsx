@@ -11,7 +11,7 @@ export default async function NewlyAddedProducts() {
   const products = await getLatestProducts()
 
   return (
-    <section className='w-full px-4 sm:px-6 lg:px-10 py-12'>
+    <section id='new-arrivals' className='w-full px-4 sm:px-6 lg:px-10 py-12'>
       {/* Header */}
       <h1
         className={`text-3xl sm:text-4xl md:text-5xl font-semibold ${cinzel.className}

@@ -59,11 +59,11 @@ export function NavbarClient({ navItems }: NavbarClientProps) {
       >
         <div
           className='
-            flex items-center w-75 sm:w-full justify-center gap-3 px-4 py-3 
+            flex items-center w-80 sm:w-full justify-center gap-3 px-4 py-3 
             rounded-2xl shadow-[0_8px_30px_rgba(0,0,0,0.45)]
             pointer-events-auto transition-all duration-300
 
-            /* New premium theme */
+          
             bg-linear-to-br from-[#2b0011]/90 via-[#3a0014]/70 to-black/60
             backdrop-blur-2xl
             border border-[#ff0055]/10

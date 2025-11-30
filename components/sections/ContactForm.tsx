@@ -37,7 +37,7 @@ export function ContactForm() {
   }
 
   return (
-    <div className='bg-white border border-[#670626]/20 rounded-2xl p-6 md:p-8 shadow-sm'>
+    <div id='contact-form' className='bg-white border border-[#670626]/20 rounded-2xl p-6 md:p-8 shadow-sm'>
 
       {status.type && (
         <div

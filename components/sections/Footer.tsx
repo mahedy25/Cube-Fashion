@@ -27,9 +27,9 @@ export default function Footer() {
             </h2>
 
             <p className='mt-4 text-sm text-gray-400 leading-relaxed max-w-xs'>
-              Crafting timeless fragrances with elegance and depth. Scentora
-              blends luxury with artistry — creating scents that leave a lasting
-              impression.
+              At Scentora, we believe fragrance is more than a scent — it’s your
+              signature. Discover timeless perfumes created to elevate everyday
+              moments into unforgettable experiences.
             </p>
 
             {/* SOCIAL ICONS */}
@@ -55,22 +55,22 @@ export default function Footer() {
             </h3>
             <ul className='space-y-2 text-sm text-gray-400'>
               <li>
-                <Link className='hover:text-white' href='/products'>
+                <Link className='hover:text-white' href='/all-products'>
                   All Perfumes
                 </Link>
               </li>
               <li>
-                <Link className='hover:text-white' href='/on-sale'>
+                <Link className='hover:text-white' href='#on-sale'>
                   On Sale
                 </Link>
               </li>
               <li>
-                <Link className='hover:text-white' href='/categories'>
+                <Link className='hover:text-white' href='/categories/mens-perfumes'>
                   Categories
                 </Link>
               </li>
               <li>
-                <Link className='hover:text-white' href='/new-arrivals'>
+                <Link className='hover:text-white' href='#new-arrivals'>
                   New Arrivals
                 </Link>
               </li>
@@ -86,18 +86,18 @@ export default function Footer() {
             </h3>
             <ul className='space-y-2 text-sm text-gray-400'>
               <li>
-                <Link className='hover:text-white' href='/help'>
+                <Link className='hover:text-white' href='/contact#contact-form'>
                   Help Center
                 </Link>
               </li>
               <li>
-                <Link className='hover:text-white' href='/shipping'>
+                <Link className='hover:text-white' href='/about#shipping'>
                   Shipping & Delivery
                 </Link>
               </li>
               <li>
-                <Link className='hover:text-white' href='/returns'>
-                  Returns & Refunds
+                <Link className='hover:text-white' href='/about#faqs'>
+                  FAQ&apos;s
                 </Link>
               </li>
               <li>

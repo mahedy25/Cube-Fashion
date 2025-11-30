@@ -108,7 +108,7 @@ export default function AboutUs() {
       </section>
 
       {/* Process (Adjusted for Retailer) */}
-      <section className='mt-16 bg-white border border-[#670626]/10 rounded-2xl p-8 shadow-sm'>
+      <section id='shipping' className='mt-16 bg-white border border-[#670626]/10 rounded-2xl p-8 shadow-sm'>
         <h4
           className={`${cinzel.className} text-xl text-[#670626] font-semibold mb-6`}
         >
@@ -184,7 +184,7 @@ export default function AboutUs() {
       </section>
 
       {/* FAQ */}
-      <section className='mt-16'>
+      <section id='faqs' className='mt-16'>
         <h4
           className={`${cinzel.className} text-xl text-[#670626] font-semibold text-center mb-6`}
         >
